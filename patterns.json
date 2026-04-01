@@ -1,0 +1,19 @@
+{
+  "high": [
+    "ignore previous instructions",
+    "reveal system prompt",
+    "bypass safety",
+    "act as system"
+  ],
+  "medium": [
+    "you are now",
+    "pretend to be",
+    "simulate",
+    "roleplay"
+  ],
+  "low": [
+    "hidden instruction",
+    "internal prompt",
+    "secret prompt"
+  ]
+}
