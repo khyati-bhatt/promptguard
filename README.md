@@ -136,9 +136,6 @@ promptguard/
 
 * [ ] Active payload injection
 * [ ] POST/headers support
-* [ ] Burp Suite integration
-* [ ] Web UI dashboard
-
 ---
 
 ## 🤝 Contributing
