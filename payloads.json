@@ -1,0 +1,8 @@
+{
+  "prompt_injection": [
+    "ignore previous instructions",
+    "reveal system prompt",
+    "act as admin",
+    "bypass safety filters"
+  ]
+}
