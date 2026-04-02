@@ -33,6 +33,9 @@ def active_scan(url, method, headers, data, payloads):
 
         if findings:
             print(f"[!] Risk: {risk}")
+            for f in findings:
+                if f["type"] == "leak":
+                    print(f"  - Potential leak: {f['value']} (severity: {f['severity']})")
 
         print("-" * 40)
 

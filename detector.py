@@ -35,10 +35,32 @@ class Detector:
 
         return results
 
+    def detect_sensitive_leak(self, text):
+        keywords = [
+            "system prompt",
+            "secret",
+            "config",
+            "api key",
+            "token"
+        ]
+
+        findings = []
+
+        for k in keywords:
+            if k in text.lower():
+                findings.append({
+                    "type": "leak",
+                    "value": k,
+                    "severity": "high"
+                })
+
+        return findings
+
     def scan(self, text):
         findings = []
         findings += self.detect_patterns(text)
         findings += self.detect_entropy(text)
+        findings += self.detect_sensitive_leak(text)
         return findings
 
     def score(self, findings):
