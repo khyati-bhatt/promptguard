@@ -36,6 +36,12 @@ def active_scan(url, method, headers, data, payloads):
             for f in findings:
                 if f["type"] == "leak":
                     print(f"  - Potential leak: {f['value']} (severity: {f['severity']})")
+                elif f["type"] == "pattern":
+                    print(f"  - Pattern match: {f['value']} (severity: {f['severity']})")
+                elif f["type"] == "entropy":
+                    print(f"  - High entropy string: {f['value']} (H={f['entropy']}, severity: {f['severity']})")
+        else:
+            print("  - None detected")
 
         print("-" * 40)
 

@@ -5,20 +5,28 @@ import json
 from url_scanner import active_scan
 
 def main():
-    parser = argparse.ArgumentParser(description="Prompt Guard Pro")
-    parser.add_argument("-t", "--text", help="Scan raw text")
-    parser.add_argument("-f", "--file", help="Scan file")
-    parser.add_argument("-u", "--url", help="Scan URL (passive)")
-    parser.add_argument("--method", default="GET")
-    parser.add_argument("--data", help="JSON body")
+    parser = argparse.ArgumentParser(
+        description="Prompt Guard - AI Security Scanner"
+    )
+
+    parser.add_argument("-t", "--text", help="Scan raw input text")
+    parser.add_argument("-f", "--file", help="Scan file content")
+    parser.add_argument("-u", "--url", help="Target URL to scan")
+
+    parser.add_argument("--method", default="GET", help="HTTP method (GET/POST)")
+    parser.add_argument("--data", help="JSON request body")
     parser.add_argument("--headers", help="JSON headers")
-    parser.add_argument("--active", action="store_true")
+
+    parser.add_argument("--active", action="store_true", help="Enable active attack mode")
 
     args = parser.parse_args()
     detector = Detector()
 
     data = None
 
+    if args.active and not args.data:
+        print("[-] Active mode requires --data")
+        return
     if args.text:
         data = args.text
 

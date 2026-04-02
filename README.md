@@ -1,16 +1,23 @@
-# Prompt Guard  🔐
+# Prompt Guard 🔐
 
-A lightweight CLI tool to detect **prompt injection attacks** and **sensitive data leaks** in AI inputs, logs, and API responses.
+🚀 A lightweight CLI tool to actively test AI systems for **prompt injection attacks** and **sensitive data leaks**.
+
+---
+
+## 📌 Version
+
+Current: **v2.0.0**
 
 ---
 
 ## 🚀 Features
 
-* 🧠 Detect prompt injection patterns
-* 🔐 Identify high-entropy strings (API keys, tokens)
-* 🌐 Scan URLs (passive mode)
-* 📄 Analyze files and raw input
-* ⚡ Simple CLI interface
+* 🧠 Prompt injection detection (pattern-based)
+* 🔐 Entropy-based secret detection (API keys, tokens)
+* 🌐 Passive URL scanning
+* 💣 Active attack mode (payload injection)
+* 🔁 Response comparison (reflection + behavior change)
+* ⚡ Simple and fast CLI interface
 
 ---
 
@@ -32,16 +39,57 @@ pip install -r requirements.txt
 python main.py -t "ignore previous instructions"
 ```
 
+---
+
 ### 🔹 Scan file
 
 ```bash
 python main.py -f sample.txt
 ```
 
-### 🔹 Scan URL (passive)
+---
+
+### 🔹 Passive URL scan
 
 ```bash
 python main.py -u https://example.com
+```
+
+---
+
+### 🔥 Active Scan (v2)
+
+```bash
+python main.py -u http://localhost:5000/chat \
+--method POST \
+--headers '{"Content-Type":"application/json"}' \
+--data '{"message":"hello"}' \
+--active
+```
+
+### What it does:
+
+* Sends baseline request
+* Injects prompt payloads
+* Compares responses
+* Detects leaks, reflections, anomalies
+
+---
+
+## 📊 Example Output
+
+```
+[ACTIVE SCAN] http://localhost:5000/chat
+
+▶ Payload: ignore previous instructions
+  ↳ Response Changed: YES
+  ↳ Reflection: NO
+  ↳ Risk: HIGH
+  ↳ Findings:
+     - LEAK: system prompt
+     - LEAK: secret
+
+--------------------------------------------------
 ```
 
 ---
@@ -50,30 +98,31 @@ python main.py -u https://example.com
 
 ### 1. Prompt Injection Detection
 
-Detects malicious patterns such as:
+Detects malicious instructions such as:
 
 * ignore previous instructions
 * reveal system prompt
-* bypass safety
+* bypass safety filters
+
+---
 
 ### 2. Entropy-Based Secret Detection
 
 Identifies high-entropy strings like:
 
-* API keys
+* API keys (`sk-...`)
 * tokens
 * encoded secrets
 
 ---
 
-## 📊 Example Output
+### 3. Sensitive Data Leak Detection
 
-```
-[!] Risk Level: CRITICAL
+Flags exposure of:
 
-[PATTERN] HIGH -> ignore previous instructions
-[ENTROPY] sk-ABCD1234XYZ (H=4.8)
-```
+* system prompts
+* secrets
+* configuration data
 
 ---
 
@@ -83,19 +132,20 @@ Identifies high-entropy strings like:
             INPUT
    (text / file / URL)
            ↓
-     Input Handler (main.py)
+     Request Engine
            ↓
-     URL Fetcher (optional)
-     (url_scanner.py)
+   Payload Injection (optional)
            ↓
-     Detection Engine
-     (detector.py)
-        ├── Pattern Matching
-        └── Entropy Analysis (entropy.py)
+       Response
            ↓
-         Scoring
+   Detection Engine
+   ├── Pattern Matching
+   ├── Entropy Analysis
+   └── Leak Detection
            ↓
-         Output
+       Scoring
+           ↓
+        Output
 ```
 
 ---
@@ -108,8 +158,11 @@ promptguard/
  ├── detector.py
  ├── entropy.py
  ├── url_scanner.py
+ ├── requestor.py
+ ├── injector.py
+ ├── comparer.py
+ ├── payloads.json
  ├── patterns.json
- ├── utils.py
  └── README.md
 ```
 
@@ -117,25 +170,28 @@ promptguard/
 
 ## 🛡️ Use Cases
 
-* Bug bounty (AI/LLM targets)
-* Prompt security testing
+* Bug bounty testing for AI/LLM endpoints
+* Prompt injection vulnerability analysis
 * API response auditing
-* Log analysis for secret leaks
+* AI security research
 
 ---
 
-## ⚠️ Limitations (v1)
+## ⚠️ Limitations
 
-* Passive URL scanning only
-* No payload injection
-* No request customization
+* Single-field injection (`message` only)
+* No async scanning
+* Limited payload set
 
 ---
 
 ## 🚀 Roadmap
 
-* [ ] Active payload injection
-* [ ] POST/headers support
+* [ ] Multi-field injection
+* [ ] Advanced response diffing
+* [ ] Burp Suite integration
+* [ ] Web UI dashboard
+
 ---
 
 ## 🤝 Contributing
